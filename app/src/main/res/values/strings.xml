@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Gallery Video Concept App</string>
+
+    <string name="title_pick_video">Pick video</string>
+
+    <string name="action_open_gallery">Open gallery</string>
 </resources>

@@ -3,14 +3,16 @@ package lt.blaster.galleryvideoconceptapp.main;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
+import lt.blaster.galleryvideoconceptapp.R;
 import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
 
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.17.
  */
-public class MainViewImpl extends FrameLayout implements MainView {
+public class MainViewImpl extends FrameLayout implements MainView, View.OnClickListener {
     private MainPresenter presenter;
     private IntentCreator intentCreator;
 
@@ -37,6 +39,12 @@ public class MainViewImpl extends FrameLayout implements MainView {
     }
 
     @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        findViewById(R.id.galleryButton).setOnClickListener(this);
+    }
+
+    @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         presenter.takeView(this);
@@ -46,5 +54,12 @@ public class MainViewImpl extends FrameLayout implements MainView {
     protected void onDetachedFromWindow() {
         presenter.dropView(this);
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void onClick(View view) {
+        Context context = getContext();
+        String title = context.getString(R.string.title_pick_video);
+        context.startActivity(intentCreator.createVideoPickerIntent(title));
     }
 }
