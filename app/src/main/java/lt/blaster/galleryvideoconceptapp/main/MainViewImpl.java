@@ -1,4 +1,4 @@
-package lt.blaster.galleryvideoconceptapp;
+package lt.blaster.galleryvideoconceptapp.main;
 
 import android.content.Context;
 import android.util.AttributeSet;

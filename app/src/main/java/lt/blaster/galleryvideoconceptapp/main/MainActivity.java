@@ -1,7 +1,9 @@
-package lt.blaster.galleryvideoconceptapp;
+package lt.blaster.galleryvideoconceptapp.main;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import lt.blaster.galleryvideoconceptapp.R;
 
 public class MainActivity extends AppCompatActivity {
 

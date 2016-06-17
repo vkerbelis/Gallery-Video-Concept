@@ -1,6 +1,8 @@
-package lt.blaster.galleryvideoconceptapp;
+package lt.blaster.galleryvideoconceptapp.main;
 
 import android.support.annotation.NonNull;
+
+import lt.blaster.galleryvideoconceptapp.PresenterView;
 
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.17.
