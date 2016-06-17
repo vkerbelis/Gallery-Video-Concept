@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -33,6 +34,13 @@ public class MainViewImpl extends FrameLayout implements MainView, View.OnClickL
     @Override
     public void setPresenter(@NonNull MainPresenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK) {
+            Log.d("MainViewImpl", "Data: " + data);
+        }
     }
 
     @Override
