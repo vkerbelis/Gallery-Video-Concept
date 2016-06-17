@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.VideoView;
 
 import lt.blaster.galleryvideoconceptapp.R;
 import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
@@ -18,6 +18,7 @@ import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
 public class MainViewImpl extends FrameLayout implements MainView, View.OnClickListener {
     private MainPresenter presenter;
     private IntentCreator intentCreator;
+    private VideoView videoView;
 
     public MainViewImpl(Context context) {
         super(context);
@@ -39,8 +40,13 @@ public class MainViewImpl extends FrameLayout implements MainView, View.OnClickL
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK) {
-            Log.d("MainViewImpl", "Data: " + data);
+            resolveVideoIntent(data);
         }
+    }
+
+    private void resolveVideoIntent(Intent data) {
+        videoView.setVideoURI(data.getData());
+        videoView.start();
     }
 
     @Override
@@ -52,12 +58,15 @@ public class MainViewImpl extends FrameLayout implements MainView, View.OnClickL
     protected void onFinishInflate() {
         super.onFinishInflate();
         findViewById(R.id.galleryButton).setOnClickListener(this);
+        videoView = (VideoView) findViewById(R.id.videoView);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        presenter.takeView(this);
+        if (!isInEditMode()) {
+            presenter.takeView(this);
+        }
     }
 
     @Override
