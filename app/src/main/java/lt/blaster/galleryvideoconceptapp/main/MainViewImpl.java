@@ -1,14 +1,18 @@
 package lt.blaster.galleryvideoconceptapp.main;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
 
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.17.
  */
 public class MainViewImpl extends FrameLayout implements MainView {
     private MainPresenter presenter;
+    private IntentCreator intentCreator;
 
     public MainViewImpl(Context context) {
         super(context);
@@ -23,8 +27,13 @@ public class MainViewImpl extends FrameLayout implements MainView {
     }
 
     @Override
-    public void setPresenter(MainPresenter presenter) {
+    public void setPresenter(@NonNull MainPresenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void setIntentCreator(@NonNull IntentCreator intentCreator) {
+        this.intentCreator = intentCreator;
     }
 
     @Override
