@@ -1,6 +1,8 @@
 package lt.blaster.galleryvideoconceptapp.main;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
@@ -58,8 +60,9 @@ public class MainViewImpl extends FrameLayout implements MainView, View.OnClickL
 
     @Override
     public void onClick(View view) {
-        Context context = getContext();
-        String title = context.getString(R.string.title_pick_video);
-        context.startActivity(intentCreator.createVideoPickerIntent(title));
+        Activity activity = ((Activity) getContext());
+        String title = activity.getString(R.string.title_pick_video);
+        Intent intent = intentCreator.createVideoPickerIntent(title);
+        activity.startActivityForResult(intent, REQUEST_VIDEO);
     }
 }
