@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private MainPresenter presenter;
-    private MainView rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,9 +12,10 @@ public class MainActivity extends AppCompatActivity {
         setUpView();
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void setUpView() {
-        rootView = (MainView) findViewById(R.id.rootView);
-        presenter = new MainPresenterImpl();
+        MainView rootView = (MainView) findViewById(R.id.rootView);
+        MainPresenter presenter = new MainPresenterImpl();
         rootView.setPresenter(presenter);
     }
 }
