@@ -1,14 +1,24 @@
 package lt.blaster.galleryvideoconceptapp.main;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.VideoView;
+
+import lt.blaster.galleryvideoconceptapp.R;
+import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
 
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.17.
  */
-public class MainViewImpl extends FrameLayout implements MainView {
+public class MainViewImpl extends LinearLayout implements MainView, View.OnClickListener {
     private MainPresenter presenter;
+    private IntentCreator intentCreator;
+    private VideoView videoView;
 
     public MainViewImpl(Context context) {
         super(context);
@@ -23,19 +33,53 @@ public class MainViewImpl extends FrameLayout implements MainView {
     }
 
     @Override
-    public void setPresenter(MainPresenter presenter) {
+    public void setPresenter(@NonNull MainPresenter presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK) {
+            resolveVideoIntent(data);
+        }
+    }
+
+    private void resolveVideoIntent(Intent data) {
+        videoView.setVideoURI(data.getData());
+        videoView.start();
+    }
+
+    @Override
+    public void setIntentCreator(@NonNull IntentCreator intentCreator) {
+        this.intentCreator = intentCreator;
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        findViewById(R.id.galleryButton).setOnClickListener(this);
+        videoView = (VideoView) findViewById(R.id.videoView);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        presenter.takeView(this);
+        if (!isInEditMode()) {
+            presenter.takeView(this);
+        }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         presenter.dropView(this);
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void onClick(View view) {
+        Activity activity = ((Activity) getContext());
+        String title = activity.getString(R.string.title_pick_video);
+        Intent intent = intentCreator.createVideoPickerIntent(title);
+        activity.startActivityForResult(intent, REQUEST_VIDEO);
     }
 }
