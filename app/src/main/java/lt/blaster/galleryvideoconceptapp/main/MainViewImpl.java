@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.VideoView;
 
 import lt.blaster.galleryvideoconceptapp.R;
@@ -15,7 +15,7 @@ import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.17.
  */
-public class MainViewImpl extends FrameLayout implements MainView, View.OnClickListener {
+public class MainViewImpl extends LinearLayout implements MainView, View.OnClickListener {
     private MainPresenter presenter;
     private IntentCreator intentCreator;
     private VideoView videoView;
