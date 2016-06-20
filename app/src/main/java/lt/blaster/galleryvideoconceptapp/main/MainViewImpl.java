@@ -3,18 +3,21 @@ package lt.blaster.galleryvideoconceptapp.main;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
 
+import com.googlecode.mp4parser.authoring.Movie;
+
+import java.io.IOException;
+
 import lt.blaster.galleryvideoconceptapp.R;
 import lt.blaster.galleryvideoconceptapp.tools.FileTools;
 import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
+import lt.blaster.galleryvideoconceptapp.tools.MovieTools;
 
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.17.
@@ -56,19 +59,14 @@ public class MainViewImpl extends LinearLayout implements MainView, View.OnClick
     }
 
     private void trimVideo(Intent data) {
-        // This also works:
-        // String simplePath = FileTools.getPathSimple(getContext(), data.getData());
-        String path = FileTools.getPath(getContext(), data.getData());
-    }
-
-    public String getRealPathFromUri(Uri contentUri) {
-        String[] projection = {MediaStore.Video.Media.DATA};
-        Cursor cursor = getContext().getContentResolver().query(contentUri, projection, null, null, null);
-        cursor.moveToFirst();
-        int index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-        String path = cursor.getString(index);
-        cursor.close();
-        return path;
+        try {
+            // This also works:
+            // String simplePath = FileTools.getPathSimple(getContext(), data.getData());
+            String path = FileTools.getPath(getContext(), data.getData());
+            Movie movie = MovieTools.createTrimmedMovie(path);
+        } catch (IOException cause) {
+            Log.d(TAG, "Could not open video stream", cause);
+        }
     }
 
     @Override
