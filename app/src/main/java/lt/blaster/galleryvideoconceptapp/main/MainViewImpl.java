@@ -45,6 +45,7 @@ public class MainViewImpl extends LinearLayout implements MainView, View.OnClick
             // This also works:
             // String simplePath = FileTools.getPathSimple(getContext(), data.getData());
             presenter.trimVideo(FileTools.getPath(getContext(), data.getData()));
+            presenter.encodeVideo(FileTools.getPath(getContext(), data.getData()));
         }
     }
 

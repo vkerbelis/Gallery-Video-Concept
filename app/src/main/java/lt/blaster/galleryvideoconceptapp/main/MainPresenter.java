@@ -7,4 +7,6 @@ import lt.blaster.galleryvideoconceptapp.Presenter;
  */
 public interface MainPresenter extends Presenter<MainView> {
     void trimVideo(String filePath);
+
+    void encodeVideo(String filePath);
 }
