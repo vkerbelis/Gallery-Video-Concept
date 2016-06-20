@@ -5,25 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
 
-import com.googlecode.mp4parser.authoring.Movie;
-
-import java.io.IOException;
-
 import lt.blaster.galleryvideoconceptapp.R;
 import lt.blaster.galleryvideoconceptapp.tools.FileTools;
 import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
-import lt.blaster.galleryvideoconceptapp.tools.MovieTools;
 
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.17.
  */
 public class MainViewImpl extends LinearLayout implements MainView, View.OnClickListener {
-    private static final String TAG = MainView.class.getSimpleName();
     private MainPresenter presenter;
     private IntentCreator intentCreator;
     private VideoView videoView;
@@ -49,24 +42,15 @@ public class MainViewImpl extends LinearLayout implements MainView, View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK) {
             resolveVideoIntent(data);
-            trimVideo(data);
+            // This also works:
+            // String simplePath = FileTools.getPathSimple(getContext(), data.getData());
+            presenter.trimVideo(FileTools.getPath(getContext(), data.getData()));
         }
     }
 
     private void resolveVideoIntent(Intent data) {
         videoView.setVideoURI(data.getData());
         videoView.start();
-    }
-
-    private void trimVideo(Intent data) {
-        try {
-            // This also works:
-            // String simplePath = FileTools.getPathSimple(getContext(), data.getData());
-            String path = FileTools.getPath(getContext(), data.getData());
-            Movie movie = MovieTools.createTrimmedMovie(path);
-        } catch (IOException cause) {
-            Log.d(TAG, "Could not open video stream", cause);
-        }
     }
 
     @Override
