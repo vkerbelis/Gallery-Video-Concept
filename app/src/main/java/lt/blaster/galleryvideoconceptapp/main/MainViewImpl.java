@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.VideoView;
 
 import lt.blaster.galleryvideoconceptapp.R;
+import lt.blaster.galleryvideoconceptapp.tools.FileTools;
 import lt.blaster.galleryvideoconceptapp.tools.IntentCreator;
 
 /**
@@ -41,6 +42,9 @@ public class MainViewImpl extends LinearLayout implements MainView, View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK) {
             resolveVideoIntent(data);
+            // This also works:
+            // String simplePath = FileTools.getPathSimple(getContext(), data.getData());
+            presenter.trimVideo(FileTools.getPath(getContext(), data.getData()));
         }
     }
 
