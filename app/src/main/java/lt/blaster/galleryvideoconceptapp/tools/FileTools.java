@@ -9,6 +9,8 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
+import java.io.File;
+
 /**
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.20.
  */
@@ -133,5 +135,9 @@ public final class FileTools {
      */
     public static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static File getExternalFile(String fileName) {
+        return new File(Environment.getExternalStorageDirectory(), fileName);
     }
 }

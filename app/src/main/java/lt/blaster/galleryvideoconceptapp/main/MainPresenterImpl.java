@@ -8,6 +8,7 @@ import com.googlecode.mp4parser.authoring.Movie;
 import java.io.IOException;
 
 import lt.blaster.galleryvideoconceptapp.PresenterView;
+import lt.blaster.galleryvideoconceptapp.tools.FileTools;
 import lt.blaster.galleryvideoconceptapp.tools.MovieTools;
 
 /**
@@ -36,6 +37,7 @@ public class MainPresenterImpl implements MainPresenter {
     public void trimVideo(String filePath) {
         try {
             Movie movie = MovieTools.createTrimmedMovie(filePath);
+            MovieTools.writeMovieToFile(movie, FileTools.getExternalFile("output-video.mp4"));
         } catch (IOException cause) {
             Log.d(TAG, "Could not open video stream", cause);
         }

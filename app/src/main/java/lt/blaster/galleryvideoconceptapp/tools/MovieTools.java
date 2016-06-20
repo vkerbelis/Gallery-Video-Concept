@@ -1,15 +1,21 @@
 package lt.blaster.galleryvideoconceptapp.tools;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+import com.coremedia.iso.boxes.Container;
 import com.googlecode.mp4parser.FileDataSourceImpl;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
+import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
 import com.googlecode.mp4parser.authoring.container.mp4.MovieCreator;
-import com.googlecode.mp4parser.authoring.tracks.AppendTrack;
 import com.googlecode.mp4parser.authoring.tracks.CroppedTrack;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +24,7 @@ import java.util.List;
  * @author Vidmantas Kerbelis (vkerbelis@yahoo.com) on 16.6.20.
  */
 public final class MovieTools {
+    private static final String TAG = MovieTools.class.getSimpleName();
 
     private MovieTools() {
         // Empty hidden constructor
@@ -47,6 +54,19 @@ public final class MovieTools {
         return movie;
     }
 
+    public static void writeMovieToFile(@NonNull Movie movie, @NonNull File file) {
+        try {
+            Container outputContainer = new DefaultMp4Builder().build(movie);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            FileChannel channel = outputStream.getChannel();
+            outputContainer.writeContainer(channel);
+            channel.close();
+            outputStream.close();
+        } catch (IOException cause) {
+            Log.d(TAG, "Could not write movie to file", cause);
+        }
+    }
+
     @Nullable
     private static List<Track> getTrimmedMovieListInner(List<Track> tracks,
                                                         double startTime, double endTime) {
@@ -72,11 +92,7 @@ public final class MovieTools {
                 currentTime += (double) delta / (double) track.getTrackMetaData().getTimescale();
                 currentSample++;
             }
-            try {
-                resultTracks.add(new AppendTrack(new CroppedTrack(track, startSample, endSample)));
-            } catch (IOException cause) {
-                return null;
-            }
+                resultTracks.add(new CroppedTrack(track, startSample, endSample));
         }
         return resultTracks;
     }
